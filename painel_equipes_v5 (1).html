@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/moyses.novaes/Downloads/painel_equipes_v5.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta de Equipes - Campos Personalizados</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0b1329;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    header {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #cbd5e1;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #2563eb;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .btn-secret {
+      background: transparent;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-secret:hover {
+      color: #fff;
+      border-color: #64748b;
+      background: #1e293b;
+    }
+    main {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .title-area {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .title-area h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .title-area p {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #64748b;
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 16px 45px 16px 50px;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    .clear-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 18px;
+      cursor: pointer;
+      display: none;
+    }
+    .clear-btn:hover { color: #ffffff; }
+    .results-container {
+      width: 100%;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .team-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: border-color 0.2s;
+    }
+    .team-card:hover {
+      border-color: #3b82f6;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .team-badge {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.15);
+      color: #60a5fa;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .team-recurso {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .login-badge {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid #334155;
+      font-size: 12px;
+    }
+    .grid-label {
+      color: #64748b;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      letter-spacing: 0.3px;
+    }
+    .grid-value {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+    .grid-value.empty {
+      color: #475569;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .no-results {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px dashed #334155;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    footer {
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    
+    /* MODAIS */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+    .modal-overlay.active {
+      display: flex !important;
+    }
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      max-width: 1150px;
+      width: 100%;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-header p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: #334155;
+      color: #f1f5f9;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .btn-danger-link {
+      background: none;
+      border: none;
+      color: #f87171;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .modal-filter-bar {
+      padding: 12px 20px;
+      background: #131d36;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .filter-input {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #fff;
+      outline: none;
+    }
+    .modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    th {
+      padding: 10px 10px;
+      color: #94a3b8;
+      font-weight: 600;
+      border-bottom: 1px solid #334155;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+    td {
+      padding: 10px 10px;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+    }
+    tr:hover td {
+      background: #162038;
+    }
+    .table-recurso {
+      color: #fff;
+      font-weight: 600;
+    }
+    .table-login {
+      font-family: monospace;
+      color: #93c5fd;
+    }
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .action-btn.edit { color: #60a5fa; }
+    .action-btn.delete { color: #f87171; }
+    .action-btn:hover { background: #1e293b; }
+
+    /* Modal de Edição */
+    .edit-box {
+      max-width: 600px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 22px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 14px 0 8px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #1e293b;
+      grid-column: span 2;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-group {
+      margin-bottom: 6px;
+    }
+    .form-group.full {
+      grid-column: span 2;
+    }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .form-control {
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .form-control:focus {
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-badge">
+      <div class="logo-icon">👥</div>
+      <span>Equipes &amp; Logins</span>
+    </div>
+    <button onclick="toggleAdminModal()" class="btn-secret" title="Acesso à Base de Dados">
+      <span>🔒</span>
+      <span>Base de Dados</span>
+    </button>
+  </header>
+
+  <main>
+    <div class="title-area">
+      <h1>Buscar Equipe</h1>
+      <p>Digite qualquer informação (equipe, login, supervisor, cidade ou campos extras)</p>
+    </div>
+
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="Ex: RIORECIN-024, luciano, Niterói, turno..." autofocus="" oninput="handleSearch()">
+      <button id="clearBtn" class="clear-btn" onclick="clearSearch()" style="display: none;">✕</button>
+    </div>
+
+    <div id="resultsArea" class="results-container"></div>
+  </main>
+
+  <footer>
+    Total de equipes cadastradas: <strong id="totalCounter" style="color: #cbd5e1;">121</strong>
+  </footer>
+
+  <!-- MODAL DA BASE DE DADOS -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h2>💾 Gerenciador da Base de Dados</h2>
+          <p>Tabela completa com as equipes e todos os campos preenchíveis.</p>
+        </div>
+        <div class="modal-actions">
+          <button onclick="openFieldNamesModal()" class="btn btn-secondary" title="Personalizar os nomes dos campos adicionais">⚙ Nomes dos Campos</button>
+          <button onclick="exportJSON()" class="btn btn-secondary">⬇ Exportar</button>
+          <button onclick="addNewTeam()" class="btn btn-primary">+ Nova Equipe</button>
+          <button onclick="toggleAdminModal()" class="btn btn-secondary">✕</button>
+        </div>
+      </div>
+
+      <div class="modal-filter-bar">
+        <input type="text" id="adminFilterInput" class="filter-input" placeholder="Filtrar por qualquer campo..." oninput="renderAdminTable()">
+        <button onclick="resetToDefault()" class="btn-danger-link">Restaurar original</button>
+      </div>
+
+      <div class="modal-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Recurso</th>
+              <th>Login</th>
+              <th>Supervisor</th>
+              <th>Cidade</th>
+              <th>Atuação</th>
+              <th>Telefone</th>
+              <th>Veículo</th>
+              <th id="thExtra1">LÍDER</th>
+              <th id="thExtra2">PLACA</th>
+              <th id="thExtra3">Campo 3</th>
+              <th id="thExtra4">Campo 4</th>
+              <th id="thExtra5">Observações</th>
+              <th style="text-align: right;">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody">
+        <tr>
+          <td class="table-recurso">RIOCERIN-002</td>
+          <td class="table-login">cristiano.amarinh0</td>
+          <td class="">LAERTE SANTOS</td>
+          <td class="">RIO BONITO</td>
+          <td class="">CORTE E RELIGAÇÃO</td>
+          <td class="">+55 21 99511-8805</td>
+          <td class="">FIAT STRADA</td>
+          <td class="">GEOVANI LIMA</td>
+          <td class="">TEH-6G74</td>
+          <td class="grid-value empty">-</td>
+          <td class="grid-value empty">-</td>
+          <td class="grid-value empty">-</td>
+          <td style="text-align: right;">
+            <button onclick="editTeam(51)" class="action-btn edit" title="Editar">✎ Editar</button>
+            <button onclick="deleteTeam(51)" class="action-btn delete" title="Excluir">🗑</button>
+          </td>
+        </tr>
+      </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE EDIÇÃO -->
+  <div id="editModal" class="modal-overlay" style="z-index: 1000;">
+    <div class="edit-box">
+      <h3 id="editModalTitle" style="color: #fff; margin-bottom: 12px; font-size: 16px;">Editar: RIOCERIN-002</h3>
+      <input type="hidden" id="editIndex" value="51">
+      
+      <div class="form-grid">
+        <div class="section-title" style="margin-top: 0;">Dados Principais</div>
+        <div class="form-group">
+          <label class="form-label">Recurso</label>
+          <input id="editRecurso" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Login</label>
+          <input id="editLogin" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Supervisor</label>
+          <input id="editSupervisor" placeholder="Nome do supervisor" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cidade</label>
+          <input id="editCidade" placeholder="Ex: Niterói, Rio..." class="form-control">
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label">Atuação</label>
+          <input id="editAtuacao" placeholder="Ex: Fiscalização, Manutenção..." class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input id="editTelefone" placeholder="(21) 99999-9999" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Veículo</label>
+          <input id="editVeiculo" placeholder="Modelo / Placa" class="form-control">
+        </div>
+
+        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>Campos Adicionais para Preenchimento</span>
+          <button type="button" onclick="openFieldNamesModal()" style="background: none; border: none; color: #38bdf8; font-size: 11px; cursor: pointer; text-decoration: underline;">⚙ Renomear campos</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="lblEditExtra1">LÍDER</label>
+          <input id="editExtra1" placeholder="Preencher LÍDER" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lblEditExtra2">PLACA</label>
+          <input id="editExtra2" placeholder="Preencher PLACA" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="lblEditExtra3">Campo 3</label>
+          <input id="editExtra3" placeholder="Preencher Campo 3" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lblEditExtra4">Campo 4</label>
+          <input id="editExtra4" placeholder="Preencher Campo 4" class="form-control">
+        </div>
+
+        <div class="form-group full">
+          <label class="form-label" id="lblEditExtra5">Observações</label>
+          <input id="editExtra5" placeholder="Preencher Observações" class="form-control">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+        <button onclick="closeEditModal()" class="btn btn-secondary">Cancelar</button>
+        <button onclick="saveTeam()" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL DE PERSONALIZAÇÃO DOS NOMES DOS CAMPOS -->
+  <div id="fieldNamesModal" class="modal-overlay" style="z-index: 1200;">
+    <div class="edit-box" style="max-width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 style="color: #fff; font-size: 16px;">⚙ Personalizar Nomes dos Campos</h3>
+        <button onclick="closeFieldNamesModal()" class="btn btn-secondary" style="padding: 4px 8px;">✕</button>
+      </div>
+      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">
+        Defina como cada um dos campos adicionais deve ser chamado. Os novos nomes aparecerão na busca, nos cartões das equipes, na tabela da base e no formulário de edição.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <label class="form-label" style="font-size: 11px; text-transform: uppercase;">Nome do 1º Campo Adicional</label>
+          <input id="cfgExtra1" class="form-control" placeholder="Ex: Turno / Horário">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 11px; text-transform: uppercase;">Nome do 2º Campo Adicional</label>
+          <input id="cfgExtra2" class="form-control" placeholder="Ex: Base / Polo">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 11px; text-transform: uppercase;">Nome do 3º Campo Adicional</label>
+          <input id="cfgExtra3" class="form-control" placeholder="Ex: Matrícula">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 11px; text-transform: uppercase;">Nome do 4º Campo Adicional</label>
+          <input id="cfgExtra4" class="form-control" placeholder="Ex: Equipamentos / CNH">
+        </div>
+        <div>
+          <label class="form-label" style="font-size: 11px; text-transform: uppercase;">Nome do 5º Campo Adicional</label>
+          <input id="cfgExtra5" class="form-control" placeholder="Ex: Observações Gerais">
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid #1e293b;">
+        <button onclick="resetFieldNamesToDefault()" class="btn-danger-link" style="font-size: 12px;">Restaurar nomes padrão</button>
+        <div style="display: flex; gap: 8px;">
+          <button onclick="closeFieldNamesModal()" class="btn btn-secondary">Cancelar</button>
+          <button onclick="saveFieldNames()" class="btn btn-primary">✔ Salvar Nomes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const INITIAL_DATA = [{"recurso": "RIORECIN-024", "login": "luciano.peixoto", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVENIN-004", "login": "cristhian.ormond", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-006", "login": "matheus.neves", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-015", "login": "robson.verdan", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-020", "login": "luis.cpcastro", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-002", "login": "kleber.neto", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-007", "login": "mateus.ferraz", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-009", "login": "diego.campos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-010", "login": "kelli.pimenta", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-013", "login": "Astolpho.simfrone1", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-001", "login": "jhony.silva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-004", "login": "heleno.robaina", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-005", "login": "matheus.marques", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-027", "login": "magno.junior", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOEGCTIN-002", "login": "edivan.sbarros", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCPATIN-006", "login": "reinaldo.veloso", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVOPIN-001", "login": "Ruan.rsantos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCALTIN-001", "login": "luan.andrade", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPAVIN-002", "login": "geferson.alves", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRIN-016", "login": "RIOPCRIN-016", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVENIN-005", "login": "roberto.gomes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-007", "login": "victor.areas", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-011", "login": "jhones.silva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-021", "login": "andre.dsantos1", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-022", "login": "leonardo.gomes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-008", "login": "miguel.goncalves", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRNT-232", "login": "cemilton.junior", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRNT-233", "login": "alessandro.belo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRNT-234", "login": "higor.sousa", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRNT-235", "login": "ana.carolyna", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-019", "login": "leonardo.meira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCPATIN-014", "login": "luiz.azevedo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-013", "login": "bruno.simao", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOAFQTIN-002", "login": "julio.crespo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRIN-011", "login": "valdeir.fsilva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIORECIN-013", "login": "gabriel.smoreira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVENIN-003", "login": "erivelton.olliveira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-013", "login": "hiago.dias", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-006", "login": "antonio.goudinho", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-007", "login": "sebastiao.neto", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-016", "login": "ruandro.curty", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-018", "login": "emmelli.araujo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-002", "login": "reinaldo.ornelas", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-008", "login": "gerson.mendes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-028", "login": "JEAN.BAIA", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-005", "login": "atila.henriques", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-003", "login": "bruno.lacorte", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-008", "login": "delcimar.silva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCPATIN-004", "login": "junio.fernandes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRIN-004", "login": "fabricio.venturino", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIORECIN-004", "login": "claudio.pjunior", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-002", "login": "cristiano.amarinh0", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-005", "login": "luan.quintanilha", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-017", "login": "cassiane.duarte", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-017", "login": "bismagrio.silva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-027", "login": "ruan.mothe", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-011", "login": "guilherme.siqueira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-012", "login": "lucas.pmarinho", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-016", "login": "marcos.vperes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-030", "login": "eduardo.costa", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTTIN-001", "login": "ruan.marinho", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOVAIN-001", "login": "luciano.oliveiraq", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCPATIN-001", "login": "ledilson.santos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPAVIN-005", "login": "eliel.couto", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-005", "login": "cristiano.azeredo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-006", "login": "pedro.abreu", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRIN-001", "login": "mario.moreira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-019", "login": "heverson.almeida", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-011", "login": "sergio.ribeiro", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRNT-230", "login": "william.sasilva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-025", "login": "joabe.santos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPAVTIN-003", "login": "marildo.rodrigues", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-006", "login": "lucas.moreira1", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPAVTIN-002", "login": "felipe.velozo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPAVTIN-005", "login": "valderson.lima", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCOMIN-003", "login": "felipe.araujo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-001", "login": "RIOVCGEXTIN-001", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-002", "login": "RIOVCGEXTIN-002", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-003", "login": "RIOVCGEXTIN-003", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-004", "login": "RIOVCGEXTIN-004", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-005", "login": "RIOVCGEXTIN-005", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-008", "login": "RIOVCGEXTIN-008", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-009", "login": "RIOVCGEXTIN009", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-010", "login": "RIOVCGEXTIN-010", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-011", "login": "RIOVCGEXTIN-011", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-013", "login": "RIOVCGEXTIN013", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-015", "login": "RIOVCGEXTIN015", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-016", "login": "RIOVCGEXTIN016", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGCALTIN-001", "login": "RIOVCGCALTIN-001", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGVENIN-001", "login": "TABATA.FONSECA26", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGVENIN-002", "login": "thailane.oliveira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGVENIN-004", "login": "roane.uine", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-013", "login": "patriny.sardinha..", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOFSCIN-004", "login": "RIOFSCIN-004", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-011", "login": "lucas.rsilva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-001", "login": "gleison.souza", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-001", "login": "welligton.germano", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-019", "login": "paulo.ranngel", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-022", "login": "phellipe.david", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOLTRIN-023", "login": "luis.nunes", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-010", "login": "rildo.petinatti2", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-002", "login": "alessandro.dsantos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCPATIN-009", "login": "fabiano.pacheco", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIORECIN-034", "login": "thafnes.ferreira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOPCRIN-010", "login": "cristiano.marinho", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-007", "login": "ney.cardoso", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-022", "login": "fabio.virgilio", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-026", "login": "daniel.bernardo", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-012", "login": "anderson.valentim", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-020", "login": "pedro.jorge", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOPEIN-012", "login": "Equipe.012", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-009", "login": "RIOCERIN-009", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOOVAIN-002", "login": "elson.alvaresm", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOCERIN-010", "login": "patrick.pery", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-023", "login": "andre.conceicao2", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-017", "login": "valdemir.csilva", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIORECIN-020", "login": "mateus.sabino", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMNTIN-101", "login": "jose.ncampos", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOMLTIN-003", "login": "gilson.borges", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIORECIN-007", "login": "bruno.foliveira", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}, {"recurso": "RIOVCGEXTIN-006", "login": "RIOVCGEXTIN-006", "supervisor": "", "cidade": "", "atuacao": "", "telefone": "", "veiculo": "", "extra1": "", "extra2": "", "extra3": "", "extra4": "", "extra5": ""}];
+
+
+    const DEFAULT_LABELS = {
+      extra1: "Campo 1",
+      extra2: "Campo 2",
+      extra3: "Campo 3",
+      extra4: "Campo 4",
+      extra5: "Observações"
+    };
+
+    function getFieldLabels() {
+      const stored = localStorage.getItem('equipes_field_labels_v5');
+      if (stored) {
+        try {
+          return { ...DEFAULT_LABELS, ...JSON.parse(stored) };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      return DEFAULT_LABELS;
+    }
+
+    function applyFieldLabels() {
+      const labels = getFieldLabels();
+      // Atualiza cabeçalhos da tabela do modal secreto
+      const th1 = document.getElementById('thExtra1');
+      const th2 = document.getElementById('thExtra2');
+      const th3 = document.getElementById('thExtra3');
+      const th4 = document.getElementById('thExtra4');
+      const th5 = document.getElementById('thExtra5');
+      if (th1) th1.innerText = labels.extra1 || 'Campo 1';
+      if (th2) th2.innerText = labels.extra2 || 'Campo 2';
+      if (th3) th3.innerText = labels.extra3 || 'Campo 3';
+      if (th4) th4.innerText = labels.extra4 || 'Campo 4';
+      if (th5) th5.innerText = labels.extra5 || 'Observações';
+
+      // Atualiza labels no modal de edição
+      const l1 = document.getElementById('lblEditExtra1');
+      const l2 = document.getElementById('lblEditExtra2');
+      const l3 = document.getElementById('lblEditExtra3');
+      const l4 = document.getElementById('lblEditExtra4');
+      const l5 = document.getElementById('lblEditExtra5');
+      if (l1) l1.innerText = labels.extra1 || 'Campo 1';
+      if (l2) l2.innerText = labels.extra2 || 'Campo 2';
+      if (l3) l3.innerText = labels.extra3 || 'Campo 3';
+      if (l4) l4.innerText = labels.extra4 || 'Campo 4';
+      if (l5) l5.innerText = labels.extra5 || 'Observações';
+
+      // Atualiza placeholders
+      const e1 = document.getElementById('editExtra1');
+      const e2 = document.getElementById('editExtra2');
+      const e3 = document.getElementById('editExtra3');
+      const e4 = document.getElementById('editExtra4');
+      const e5 = document.getElementById('editExtra5');
+      if (e1) e1.placeholder = 'Preencher ' + (labels.extra1 || 'Campo 1');
+      if (e2) e2.placeholder = 'Preencher ' + (labels.extra2 || 'Campo 2');
+      if (e3) e3.placeholder = 'Preencher ' + (labels.extra3 || 'Campo 3');
+      if (e4) e4.placeholder = 'Preencher ' + (labels.extra4 || 'Campo 4');
+      if (e5) e5.placeholder = 'Preencher ' + (labels.extra5 || 'Observações');
+    }
+
+    function openFieldNamesModal() {
+      const labels = getFieldLabels();
+      document.getElementById('cfgExtra1').value = labels.extra1 || '';
+      document.getElementById('cfgExtra2').value = labels.extra2 || '';
+      document.getElementById('cfgExtra3').value = labels.extra3 || '';
+      document.getElementById('cfgExtra4').value = labels.extra4 || '';
+      document.getElementById('cfgExtra5').value = labels.extra5 || '';
+      document.getElementById('fieldNamesModal').classList.add('active');
+    }
+
+    function closeFieldNamesModal() {
+      document.getElementById('fieldNamesModal').classList.remove('active');
+    }
+
+    function saveFieldNames() {
+      const extra1 = document.getElementById('cfgExtra1').value.trim() || DEFAULT_LABELS.extra1;
+      const extra2 = document.getElementById('cfgExtra2').value.trim() || DEFAULT_LABELS.extra2;
+      const extra3 = document.getElementById('cfgExtra3').value.trim() || DEFAULT_LABELS.extra3;
+      const extra4 = document.getElementById('cfgExtra4').value.trim() || DEFAULT_LABELS.extra4;
+      const extra5 = document.getElementById('cfgExtra5').value.trim() || DEFAULT_LABELS.extra5;
+
+      const labels = { extra1, extra2, extra3, extra4, extra5 };
+      localStorage.setItem('equipes_field_labels_v5', JSON.stringify(labels));
+      applyFieldLabels();
+      closeFieldNamesModal();
+      handleSearch();
+      renderAdminTable();
+      alert('Nomes dos campos atualizados com sucesso!');
+    }
+
+    function resetFieldNamesToDefault() {
+      if (confirm('Deseja restaurar os nomes padrão dos campos adicionais?')) {
+        localStorage.removeItem('equipes_field_labels_v5');
+        applyFieldLabels();
+        closeFieldNamesModal();
+        handleSearch();
+        renderAdminTable();
+      }
+    }
+
+    function getTeams() {
+      const stored = localStorage.getItem('equipes_base_dados_v4');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) { console.error(e); }
+      }
+      localStorage.setItem('equipes_base_dados_v4', JSON.stringify(INITIAL_DATA));
+      return INITIAL_DATA;
+    }
+
+    function saveTeams(data) {
+      localStorage.setItem('equipes_base_dados_v4', JSON.stringify(data));
+      applyFieldLabels();
+    updateCounter();
+      handleSearch();
+      renderAdminTable();
+    }
+
+    function updateCounter() {
+      const teams = getTeams();
+      document.getElementById('totalCounter').innerText = teams.length;
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const resultsArea = document.getElementById('resultsArea');
+      const clearBtn = document.getElementById('clearBtn');
+
+      if (!query) {
+        resultsArea.innerHTML = '';
+        clearBtn.style.display = 'none';
+        return;
+      }
+
+      clearBtn.style.display = 'block';
+      const teams = getTeams();
+      const labels = getFieldLabels();
+      const matches = teams.filter(t => 
+        (t.recurso && t.recurso.toLowerCase().includes(query)) ||
+        (t.login && t.login.toLowerCase().includes(query)) ||
+        (t.supervisor && t.supervisor.toLowerCase().includes(query)) ||
+        (t.cidade && t.cidade.toLowerCase().includes(query)) ||
+        (t.atuacao && t.atuacao.toLowerCase().includes(query)) ||
+        (t.telefone && t.telefone.toLowerCase().includes(query)) ||
+        (t.veiculo && t.veiculo.toLowerCase().includes(query)) ||
+        (t.extra1 && t.extra1.toLowerCase().includes(query)) ||
+        (t.extra2 && t.extra2.toLowerCase().includes(query)) ||
+        (t.extra3 && t.extra3.toLowerCase().includes(query)) ||
+        (t.extra4 && t.extra4.toLowerCase().includes(query)) ||
+        (t.extra5 && t.extra5.toLowerCase().includes(query))
+      );
+
+      if (matches.length === 0) {
+        resultsArea.innerHTML = '<div class="no-results">&#128533; Nenhuma equipe encontrada para "' + query + '"</div>';
+        return;
+      }
+
+      resultsArea.innerHTML = matches.slice(0, 15).map(team => `
+        <div class="team-card">
+          <div class="card-header">
+            <div>
+              <span class="team-badge">Equipe</span>
+              <div class="team-recurso">${team.recurso || 'Não informado'}</div>
+            </div>
+            <div>
+              <span class="login-badge">${team.login || '-'}</span>
+            </div>
+          </div>
+          <div class="card-grid">
+            <div>
+              <div class="grid-label">Supervisor</div>
+              <div class="grid-value ${!team.supervisor ? 'empty' : ''}">${team.supervisor || 'Não informado'}</div>
+            </div>
+            <div>
+              <div class="grid-label">Cidade</div>
+              <div class="grid-value ${!team.cidade ? 'empty' : ''}">${team.cidade || 'Não informada'}</div>
+            </div>
+            <div>
+              <div class="grid-label">Atuação</div>
+              <div class="grid-value ${!team.atuacao ? 'empty' : ''}">${team.atuacao || 'Não informada'}</div>
+            </div>
+            <div>
+              <div class="grid-label">Telefone</div>
+              <div class="grid-value ${!team.telefone ? 'empty' : ''}">${team.telefone || 'Não cadastrado'}</div>
+            </div>
+            <div>
+              <div class="grid-label">Veículo</div>
+              <div class="grid-value ${!team.veiculo ? 'empty' : ''}">${team.veiculo || 'Não cadastrado'}</div>
+            </div>
+
+            ${team.extra1 ? `
+            <div>
+              <div class="grid-label">${labels.extra1 || 'Campo 1'}</div>
+              <div class="grid-value">${team.extra1}</div>
+            </div>` : ''}
+
+            ${team.extra2 ? `
+            <div>
+              <div class="grid-label">${labels.extra2 || 'Campo 2'}</div>
+              <div class="grid-value">${team.extra2}</div>
+            </div>` : ''}
+
+            ${team.extra3 ? `
+            <div>
+              <div class="grid-label">${labels.extra3 || 'Campo 3'}</div>
+              <div class="grid-value">${team.extra3}</div>
+            </div>` : ''}
+
+            ${team.extra4 ? `
+            <div>
+              <div class="grid-label">${labels.extra4 || 'Campo 4'}</div>
+              <div class="grid-value">${team.extra4}</div>
+            </div>` : ''}
+
+            ${team.extra5 ? `
+            <div style="grid-column: 1 / -1;">
+              <div class="grid-label">${labels.extra5 || 'Observações'}</div>
+              <div class="grid-value">${team.extra5}</div>
+            </div>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      handleSearch();
+      document.getElementById('searchInput').focus();
+    }
+
+    function toggleAdminModal() {
+      const modal = document.getElementById('adminModal');
+      modal.classList.toggle('active');
+      if (modal.classList.contains('active')) {
+        renderAdminTable();
+      }
+    }
+
+    function renderAdminTable() {
+      const filter = document.getElementById('adminFilterInput').value.trim().toLowerCase();
+      const teams = getTeams();
+      const tbody = document.getElementById('adminTableBody');
+
+      const filtered = teams.map((t, idx) => ({ ...t, originalIndex: idx })).filter(t => 
+        !filter ||
+        (t.recurso && t.recurso.toLowerCase().includes(filter)) ||
+        (t.login && t.login.toLowerCase().includes(filter)) ||
+        (t.supervisor && t.supervisor.toLowerCase().includes(filter)) ||
+        (t.cidade && t.cidade.toLowerCase().includes(filter)) ||
+        (t.atuacao && t.atuacao.toLowerCase().includes(filter)) ||
+        (t.telefone && t.telefone.toLowerCase().includes(filter)) ||
+        (t.veiculo && t.veiculo.toLowerCase().includes(filter)) ||
+        (t.extra1 && t.extra1.toLowerCase().includes(filter)) ||
+        (t.extra2 && t.extra2.toLowerCase().includes(filter)) ||
+        (t.extra3 && t.extra3.toLowerCase().includes(filter)) ||
+        (t.extra4 && t.extra4.toLowerCase().includes(filter)) ||
+        (t.extra5 && t.extra5.toLowerCase().includes(filter))
+      );
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr>
+          <td class="table-recurso">${item.recurso}</td>
+          <td class="table-login">${item.login}</td>
+          <td class="${item.supervisor ? '' : 'grid-value empty'}">${item.supervisor || '-'}</td>
+          <td class="${item.cidade ? '' : 'grid-value empty'}">${item.cidade || '-'}</td>
+          <td class="${item.atuacao ? '' : 'grid-value empty'}">${item.atuacao || '-'}</td>
+          <td class="${item.telefone ? '' : 'grid-value empty'}">${item.telefone || '-'}</td>
+          <td class="${item.veiculo ? '' : 'grid-value empty'}">${item.veiculo || '-'}</td>
+          <td class="${item.extra1 ? '' : 'grid-value empty'}">${item.extra1 || '-'}</td>
+          <td class="${item.extra2 ? '' : 'grid-value empty'}">${item.extra2 || '-'}</td>
+          <td class="${item.extra3 ? '' : 'grid-value empty'}">${item.extra3 || '-'}</td>
+          <td class="${item.extra4 ? '' : 'grid-value empty'}">${item.extra4 || '-'}</td>
+          <td class="${item.extra5 ? '' : 'grid-value empty'}">${item.extra5 || '-'}</td>
+          <td style="text-align: right;">
+            <button onclick="editTeam(${item.originalIndex})" class="action-btn edit" title="Editar">&#9998; Editar</button>
+            <button onclick="deleteTeam(${item.originalIndex})" class="action-btn delete" title="Excluir">&#128465;</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function addNewTeam() {
+      document.getElementById('editModalTitle').innerText = 'Nova Equipe';
+      document.getElementById('editIndex').value = '-1';
+      document.getElementById('editRecurso').value = '';
+      document.getElementById('editLogin').value = '';
+      document.getElementById('editSupervisor').value = '';
+      document.getElementById('editCidade').value = '';
+      document.getElementById('editAtuacao').value = '';
+      document.getElementById('editTelefone').value = '';
+      document.getElementById('editVeiculo').value = '';
+      document.getElementById('editExtra1').value = '';
+      document.getElementById('editExtra2').value = '';
+      document.getElementById('editExtra3').value = '';
+      document.getElementById('editExtra4').value = '';
+      document.getElementById('editExtra5').value = '';
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function editTeam(idx) {
+      const teams = getTeams();
+      const team = teams[idx];
+      if (!team) return;
+      document.getElementById('editModalTitle').innerText = 'Editar: ' + team.recurso;
+      document.getElementById('editIndex').value = idx;
+      document.getElementById('editRecurso').value = team.recurso || '';
+      document.getElementById('editLogin').value = team.login || '';
+      document.getElementById('editSupervisor').value = team.supervisor || '';
+      document.getElementById('editCidade').value = team.cidade || '';
+      document.getElementById('editAtuacao').value = team.atuacao || '';
+      document.getElementById('editTelefone').value = team.telefone || '';
+      document.getElementById('editVeiculo').value = team.veiculo || '';
+      document.getElementById('editExtra1').value = team.extra1 || '';
+      document.getElementById('editExtra2').value = team.extra2 || '';
+      document.getElementById('editExtra3').value = team.extra3 || '';
+      document.getElementById('editExtra4').value = team.extra4 || '';
+      document.getElementById('editExtra5').value = team.extra5 || '';
+      document.getElementById('editModal').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').classList.remove('active');
+    }
+
+    function saveTeam() {
+      const idx = parseInt(document.getElementById('editIndex').value, 10);
+      const recurso = document.getElementById('editRecurso').value.trim();
+      const login = document.getElementById('editLogin').value.trim();
+      const supervisor = document.getElementById('editSupervisor').value.trim();
+      const cidade = document.getElementById('editCidade').value.trim();
+      const atuacao = document.getElementById('editAtuacao').value.trim();
+      const telefone = document.getElementById('editTelefone').value.trim();
+      const veiculo = document.getElementById('editVeiculo').value.trim();
+      const extra1 = document.getElementById('editExtra1').value.trim();
+      const extra2 = document.getElementById('editExtra2').value.trim();
+      const extra3 = document.getElementById('editExtra3').value.trim();
+      const extra4 = document.getElementById('editExtra4').value.trim();
+      const extra5 = document.getElementById('editExtra5').value.trim();
+
+      if (!recurso) {
+        alert('O nome do recurso é obrigatório.');
+        return;
+      }
+
+      const teams = getTeams();
+      const updated = { recurso, login, supervisor, cidade, atuacao, telefone, veiculo, extra1, extra2, extra3, extra4, extra5 };
+
+      if (idx === -1) {
+        teams.unshift(updated);
+      } else {
+        teams[idx] = updated;
+      }
+
+      saveTeams(teams);
+      closeEditModal();
+    }
+
+    function deleteTeam(idx) {
+      const teams = getTeams();
+      if (!confirm('Tem certeza que deseja excluir ' + teams[idx].recurso + '?')) return;
+      teams.splice(idx, 1);
+      saveTeams(teams);
+    }
+
+    function resetToDefault() {
+      if (confirm('Atenção: Isso restaurará os dados originais da planilha e descartará as edições manuais. Continuar?')) {
+        saveTeams(JSON.parse(JSON.stringify(INITIAL_DATA)));
+      }
+    }
+
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getTeams(), null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', 'equipes_completo.json');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    applyFieldLabels();
+    updateCounter();
+  </script>
+
+
+</body></html>
